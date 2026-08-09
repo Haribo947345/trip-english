@@ -186,7 +186,6 @@
   }
   body {
     @apply bg-background text-foreground;
-    min-width: 360px;
   }
   html {
     @apply font-sans;

@@ -30,21 +30,25 @@ function ThemeColorSync() {
   useEffect(() => {
     if (!resolvedTheme) return;
 
-    const themeColor = getComputedStyle(document.documentElement)
-      .getPropertyValue("--browser-theme-color")
-      .trim();
-    let meta = document.querySelector<HTMLMetaElement>(
-      'meta[name="theme-color"][data-trip-english-theme]',
-    );
+    const frame = requestAnimationFrame(() => {
+      const themeColor = getComputedStyle(document.documentElement)
+        .getPropertyValue("--browser-theme-color")
+        .trim();
+      let meta = document.querySelector<HTMLMetaElement>(
+        'meta[name="theme-color"][data-trip-english-theme]',
+      );
 
-    if (!meta) {
-      meta = document.createElement("meta");
-      meta.name = "theme-color";
-      meta.dataset.tripEnglishTheme = "true";
-      document.head.appendChild(meta);
-    }
+      if (!meta) {
+        meta = document.createElement("meta");
+        meta.name = "theme-color";
+        meta.dataset.tripEnglishTheme = "true";
+        document.head.appendChild(meta);
+      }
 
-    meta.content = themeColor;
+      meta.content = themeColor;
+    });
+
+    return () => cancelAnimationFrame(frame);
   }, [resolvedTheme]);
 
   return null;
